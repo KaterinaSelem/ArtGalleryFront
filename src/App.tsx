@@ -1,21 +1,13 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import GlobalStyles from "styles/GlobalStyles";
-
-import './App.css'
-import UserCard from './components/User/User'
+import './App.css';
+import UserList from './components/User/UserList';
 
 function App() {
-
-
-  return (<BrowserRouter>
-    
-    <GlobalStyles/>
-    <UserCard/>
-    
-
-   </BrowserRouter>
-  )
+  return (
+    <>
+      <UserList />
+    </>
+  );
 }
 
-export default App
+export default App;

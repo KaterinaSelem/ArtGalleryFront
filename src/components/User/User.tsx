@@ -1,17 +1,66 @@
-import { UserCardBorn, UserCardCity, UserCardDescript, UserCardExhibits, UserCardTitle, UserCardWrapper, UserImage } from "./styles";
-import { UserCardProps } from "./types";
+import { Component } from "react";
+import { BornLives, BornLivesWrap, BtnConnect, CardWrapper, DescriptionInfo, DescriptionWrap, UserCardContent, UserCardPar, UserCardWrapper, UserImage, UserTitle, WrapInfo, WrapTitle } from "./styles";
 
-function UserCard({ userData }: UserCardProps){
-    return(
-        <UserCardWrapper>
-            <UserCardTitle>{userData.name}</UserCardTitle>
-            <UserCardBorn>{userData.born_city}</UserCardBorn>
-            <UserCardCity>{userData.live_city}</UserCardCity>
-            <UserCardExhibits>{userData.exhibition}</UserCardExhibits>
-            <UserCardDescript>{userData.description}</UserCardDescript>
-            <UserImage>{userData.image}</UserImage>
-        </UserCardWrapper>
-    )
+export interface IUser {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    userRole: number;
+    bornCity: string;
+    liveCity: string;
+    exhibition: string[];
+    description: string;
+    image: string;
 }
 
-export default UserCard;
+interface IUserProps{
+    user: IUser;
+  }
+
+  export class User extends Component<IUserProps> {
+    render() {
+      const {name, bornCity, liveCity, exhibition, description, image } = this.props.user;
+      return (
+        <CardWrapper>
+        <UserCardWrapper>
+          <WrapTitle><UserTitle>{name}</UserTitle></WrapTitle>
+          <WrapInfo>
+            <BornLivesWrap>
+              <BornLives>
+                <UserCardPar>Born:</UserCardPar>
+                <UserCardContent> {bornCity}</UserCardContent>
+              </BornLives>  
+              <BornLives>
+                <UserCardPar>Lives:</UserCardPar>
+                <UserCardContent>  {liveCity}</UserCardContent> 
+              </BornLives>
+              <BornLives>
+                <UserCardPar>Exhibition: </UserCardPar>
+                <UserCardContent>  {exhibition}</UserCardContent>
+              </BornLives>
+            </BornLivesWrap>
+          <DescriptionWrap>
+            <DescriptionInfo>{description}</DescriptionInfo>
+            <BtnConnect>CONNECT ME</BtnConnect>
+          </DescriptionWrap>
+          <DescriptionWrap>
+            <UserImage>
+            { <img src={image} alt="" />}
+            </UserImage>
+          </DescriptionWrap>
+         
+          </WrapInfo>
+        </UserCardWrapper>
+        </CardWrapper>
+      );
+    }
+  }
+  
+  export default User;
+  
+
+
+
+
+
