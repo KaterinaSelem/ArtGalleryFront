@@ -1,5 +1,7 @@
 import { Component } from "react";
-import { BornLives, BornLivesWrap, BtnConnect, CardWrapper, DescriptionInfo, DescriptionWrap, UserCardContent, UserCardPar, UserCardWrapper, UserImage, UserTitle, WrapInfo, WrapTitle } from "./styles";
+import { BornLives, BornLivesWrap, CardWrapper, DescriptionInfo, DescriptionWrap, UserCardContent, UserCardPar, UserCardWrapper, UserImage, UserTitle, WrapBtn, WrapInfo, WrapTitle } from "./styles";
+import './styles.css';
+import { ButtonStyled } from "../Button/styles";
 
 export interface IUser {
     id: number;
@@ -42,11 +44,15 @@ interface IUserProps{
             </BornLivesWrap>
           <DescriptionWrap>
             <DescriptionInfo>{description}</DescriptionInfo>
-            <BtnConnect>CONNECT ME</BtnConnect>
+            <WrapBtn>
+            <ButtonStyled disabled={true} selected={false}>CONNECT ME</ButtonStyled>
+            </WrapBtn>
           </DescriptionWrap>
           <DescriptionWrap>
             <UserImage>
-            { <img src={image} alt="" />}
+     
+            { <img src={image} alt="" className="imgHight" />}
+          
             </UserImage>
           </DescriptionWrap>
          

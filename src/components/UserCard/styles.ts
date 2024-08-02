@@ -7,24 +7,22 @@ background: #F4F4F4;
 justify-content: center;
 margin-bottom: 40px;
 `
-
-
 export const UserCardWrapper = styled.div`
-width: 1440px;
+max-width: 80%px;
 height: 676px;
 flex-shrink: 0;
 background: #F4F4F4;
 `
-
 export const WrapTitle= styled.div`
 display: inline-flex;
 padding: 65px 0px 12px 14px;
 align-items: center;
-border-bottom: 2px solid #000;`
+border-bottom: 2px solid #000;
+width: 100%;`
 
 export const UserTitle= styled.div`
 color: #000;
-width: 1360px;
+width: 80%px;
 font-family: "Playfair Display";
 font-size: 96px;
 font-style: italic;
@@ -83,30 +81,18 @@ font-weight: 400;
 padding: 35px 12px 60px 0px;
 line-height: 24px;`
 
-export const BtnConnect = styled.button`
-margin-top: 230px;
-width: 197px;
-height: 48px;
-flex-shrink: 0;
-border: 2px solid #000;
-background: rgba(217, 217, 217, 0.00);
-color: #000;
-font-family: Barlow;
-font-size: 20px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
-&:hover {
-    background: rgba(217, 217, 217, 0.5);
-  }
-`
-
-
-
 export const UserImage = styled.div`
 width: 400px;
 height: 400px;
 flex-shrink: 0;
 padding: 45px 0px 0px 109px;
 `
+
+export const WrapBtn = styled.div`
+width: 197px;
+height: 48px;
+flex-shrink: 0;
+
+`
+
 
