@@ -16,6 +16,8 @@ export interface IUser {
     image: string;
 }
 
+
+
 interface IUserProps{
     user: IUser;
   }

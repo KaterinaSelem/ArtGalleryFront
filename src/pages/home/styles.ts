@@ -20,7 +20,8 @@ font-family: Barlow;
 font-size: 32px;
 font-style: normal;
 font-weight: 400;
-line-height: var(--Display-Medium-Line-Height, 32px);
+line-height: var(--Display-Medium-Line-Height, 52px);
+margin-top: 20px;
 `
 
 export const StyledLink = styled(Link)`
