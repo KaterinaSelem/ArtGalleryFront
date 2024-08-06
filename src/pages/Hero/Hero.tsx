@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { HomePageComponent, StyledLink, StyledList } from './styles';
-import { IUser } from '../../components/UserCard/User';
+import { IUser } from '../../components/UserCard/types';
 
 
 const Hero: React.FC = () => {

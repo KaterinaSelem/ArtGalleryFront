@@ -1,5 +1,6 @@
 import { Component } from "react";
-import User, { IUser } from "./User";
+import  { IUser } from "./types";
+import User from "./User";
 
 interface IUserListState{
   users: IUser[];
@@ -16,7 +17,7 @@ export class UserList extends Component<Record<string, never>, IUserListState> {
   }
   componentDidMount() {
     this.setState({ ...this.state, isLoading: true });
-    fetch("http://localhost:8080/api/users")
+    fetch("/api/users")
       .then((response) => response.json())
       .then((data: IUser[]) => {
         this.setState({ users: data, isLoading: false });

@@ -12,8 +12,8 @@ export const HomePageComponent = styled.div`
 `;
 
 export const StyledList = styled.div`
-width: 1035px;
-padding: 17px 739px 9px 152px;
+width: fit-content;
+padding: 17px 739px 40px 152px;
 align-items: center;
 color: #FFF;
 font-family: Barlow;

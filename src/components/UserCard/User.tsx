@@ -1,21 +1,9 @@
 import { Component } from 'react';
+import './styles.css'
 import { BornLives, BornLivesWrap, CardWrapper, DescriptionInfo, DescriptionWrap, UserCardContent, UserCardPar, UserCardWrapper, UserImage, UserTitle, WrapBtn, WrapInfo, WrapTitle } from './styles';
 
 import { ButtonStyled } from '../Button/styles';
-
-export interface IUser {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-    userRole: number;
-    bornCity: string;
-    liveCity: string;
-    exhibition: string[];
-    description: string;
-    image: string;
-}
-
+import { IUser } from './types';
 
 
 interface IUserProps{
@@ -52,7 +40,7 @@ interface IUserProps{
           </DescriptionWrap>
           <DescriptionWrap>
             <UserImage>
-     
+      
             { <img src={image} alt="" className="imgHight" />}
           
             </UserImage>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import User, { IUser } from '../../components/UserCard/User';
 import { useParams } from 'react-router-dom';
+import ArtworkPrew from '../../components/Artworks/ArtworkPrew';
+import { IUser } from '../../components/UserCard/types';
+import User from '../../components/UserCard/User';
 
 
 const Artist: React.FC = () => {
@@ -29,7 +31,8 @@ const Artist: React.FC = () => {
 
   return (
     <>
-      <User user={user} />
+      <User user={user}  />
+      <ArtworkPrew users={[]}/>
     </>
   );
 };

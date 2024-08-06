@@ -18,7 +18,7 @@ import {
   
 } from './styles';
 import Pagination from '../Pagination/Pagination';
-import { IUser } from '../UserCard/User';
+import { IUser } from '../UserCard/types';
 
 
 

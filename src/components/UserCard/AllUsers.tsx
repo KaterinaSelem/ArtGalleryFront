@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { IUser } from './User';
+import React, { createContext, useEffect, useState } from 'react';
+import { IUser } from './types';
 import {
   StyledLinkPreview,
   Container,
@@ -10,6 +10,9 @@ import {
 } from './styles';
 import Pagination from '../Pagination/Pagination';
 //list of all users
+
+//export UsersContext = createContext<IUser[]>([]);
+
 const AllUsers: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -57,7 +60,7 @@ const AllUsers: React.FC = () => {
             key={user.id}
             style={{ backgroundImage: `url(${user.image})` }}
           >
-            <StyledLinkPreview to={`/user/${user.id}`}>
+            <StyledLinkPreview to={`/users/${user.id}`}>
               {user.name}
             </StyledLinkPreview>
           </UserCard>
