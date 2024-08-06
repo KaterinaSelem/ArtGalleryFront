@@ -9,13 +9,13 @@ import {
   UsersWrap,
 } from './styles';
 import Pagination from '../Pagination/Pagination';
-
+//list of all users
 const AllUsers: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [usersPerPage] = useState<number>(4); // Adjust the number of users per page
-
+  const [usersPerPage] = useState<number>(4); 
+  
   useEffect(() => {
     fetch('http://localhost:8080/api/users')
       .then((response) => response.json())

@@ -1,36 +1,39 @@
 import { useState, useEffect } from 'react';
 import { IArtwork } from './types';
 import {
-  Title,
   ArtworksContainer,
   ArtworkCard,
-  StyledArtLinkWorkPreview,
-  ContainerArtworks,
   ArtworkInfoCard,
-  Details,
-  Separator,
-  Status,
-  StatusIndicator,
   ArtTitle,
   Artist,
   ArtworkPreveiwcontainer,
+  ContainerArtworksGallery,
+  Details,
   Frame,
+  Title,
+  StyledArtLinkWorkPreview,
+  Separator,
+  Status,
+  StatusIndicator,
+  
 } from './styles';
 import Pagination from '../Pagination/Pagination';
 import { IUser } from '../UserCard/User';
 
-export interface ArtworkPrewProps {
+
+
+export interface ArtworkProps {
   users: IUser[];
 }
 
-const ArtworkPrew: React.FC<ArtworkPrewProps> = ({ users }) => {
+const ArtworkPrew: React.FC<ArtworkProps> = ({ users }) => {
   const [artworks, setArtworks] = useState<IArtwork[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [artworksPerPage] = useState<number>(4);
+  const [artworksPerPage] = useState<number>(16);
 
-  useEffect(() => {
-    fetch('/api/works')
+  useEffect(() => { 
+    fetch('http://localhost:8080/api/works')
       .then((response) => response.json())
       .then((data: IArtwork[]) => {
         setArtworks(data);
@@ -70,8 +73,8 @@ const ArtworkPrew: React.FC<ArtworkPrewProps> = ({ users }) => {
   };
 
   return (
-    <ContainerArtworks>
-      <Title>Discover our Gallery</Title>
+    <ContainerArtworksGallery>
+      <Title>Gallery</Title>
       <ArtworksContainer>
         {currentArtworks.map((artwork: IArtwork) => (
           <ArtworkPreveiwcontainer
@@ -106,7 +109,7 @@ const ArtworkPrew: React.FC<ArtworkPrewProps> = ({ users }) => {
           onPageChange={handlePageChange}
         />
       </ArtworksContainer>
-    </ContainerArtworks>
+    </ContainerArtworksGallery>
   );
 };
 

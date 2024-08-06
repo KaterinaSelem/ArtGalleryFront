@@ -2,8 +2,7 @@
 import { useParams } from 'react-router-dom';
 import { IUser } from './User';
 import { BornLives, 
-  BornLivesWrap, 
-  CardWrapper, DescriptionInfo, DescriptionWrap, UserCardContent, UserCardPar, UserCardWrapper, UserImage, UserTitle, WrapBtn, WrapInfo, WrapTitle } from './styles';
+  BornLivesWrap, CardWrapper, DescriptionInfo, DescriptionWrap, UserCardContent, UserCardPar, UserCardWrapper, UserImage, UserTitle, WrapBtn, WrapInfo, WrapTitle } from './styles';
 import { ButtonStyled } from '../Button/styles';
 
 

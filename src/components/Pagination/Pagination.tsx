@@ -8,7 +8,7 @@ interface PaginationIndicatorProps {
 
 const PaginationIndicator = styled.div<PaginationIndicatorProps>`
   flex-grow: 1;
-  height: 4px; /* Adjust this value to increase the height */
+  height: 4px;
   background: linear-gradient(to right, black ${props => props.progress}%, lightgray ${props => props.progress}%);
   margin: 0 10px;
 `;

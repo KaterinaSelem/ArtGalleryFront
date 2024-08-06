@@ -23,10 +23,20 @@ height: 746px;
 margin-left: 60px;
 `;
 
+export const ContainerArtworksGallery = styled.div`
+display: flex;
+flex-direction: column;
+align-items: left;
+gap: 20px;
+height: fit-content;
+margin-left: 60px;
+margin-bottom: 40px;
+`;
+
 export const ArtworksContainer = styled.div`
 display: flex;
 flex-wrap: wrap;
-height:574px;
+height:fit-content;
 width: 1440px;
 gap: 30px;
 margin-left: 60px;
@@ -79,12 +89,14 @@ export const ArtTitle = styled.h1`
   margin-top: 16px;
   color: #000;
   width: 319px;
+  margin-bottom: 16px;
 `;
 
 export const Artist = styled.h2`
   font-size: 16px;
   font-weight: 400;
   color: #707070;
+
 `;
 
 export const Details = styled.div`
@@ -92,6 +104,7 @@ export const Details = styled.div`
   align-items: center;
   font-size: 14px;
   color: #707070;
+  margin-top: 12px;
 `;
 
 export const Separator = styled.span`

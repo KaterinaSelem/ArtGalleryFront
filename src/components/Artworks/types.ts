@@ -15,3 +15,4 @@ export interface IArtwork {
 export interface IArtworkProps {
     artwork: IArtwork;
 }
+

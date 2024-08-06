@@ -13,7 +13,7 @@ justify-content: center;
 margin-bottom: 40px;
 `
 export const UserCardWrapper = styled.div`
-max-width: 80%px;
+max-width: 80%;
 height: 676px;
 flex-shrink: 0;
 background: #F4F4F4;
@@ -51,6 +51,7 @@ export const BornLives = styled.div`
 display: flex;
 flex-direction: column;
 padding: 0px 0px 16px 0px;
+margin-bottom: 18px;
 `
 
 export const UserCardPar= styled.div`
@@ -67,7 +68,7 @@ font-family: Barlow;
 font-size: 16px;
 font-style: normal;
 font-weight: 400;
-line-height: 24px;
+line-height: 52px;
 `
 
 export const DescriptionWrap = styled.div`
@@ -84,7 +85,8 @@ font-size: 16px;
 font-style: normal;
 font-weight: 400;
 padding: 35px 12px 60px 0px;
-line-height: 24px;`
+line-height: 24px;
+`
 
 export const UserImage = styled.div`
 width: 400px;
@@ -120,7 +122,7 @@ line-height: var(--Display-Medium-Line-Height, 52px);
 
 export const Container = styled.div`
 width: 1440px;
-height: 808px;
+height: 750px;
 flex-shrink: 0;
 padding: 12px 0px 0px 60px;
 font-family: Barlow;
@@ -130,7 +132,6 @@ margin-top: 60px;
 `;
 
 export const Title = styled.div`
-margin-top: 30px;
 font-size: 40px;
 font-weight: 400;
 font-family: Barlow;

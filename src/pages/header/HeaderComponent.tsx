@@ -15,9 +15,13 @@ import {
   WrapIcons,
   WrapUserInfo,
 } from './styles';
-import { ArtworkPrewProps } from '../../components/Artworks/artworkPrew';
+import { IUser } from '../../components/UserCard/User';
 
-const Header: React.FC<ArtworkPrewProps> = ({ users }) => {
+export interface ArtworkPrewProps {
+  users: IUser[];
+}
+
+const HeaderComponent: React.FC<ArtworkPrewProps> = ({ users }) => {
   const [randomArtwork, setRandomArtwork] = useState<IArtwork | null>(null);
 
   useEffect(() => {
@@ -62,8 +66,8 @@ const Header: React.FC<ArtworkPrewProps> = ({ users }) => {
           <UserInfo>
             {randomArtwork && (
               <ArtLink to={`/artwork/${randomArtwork.id}`}>
-                {randomArtwork.title}  |  {getArtistName(randomArtwork.userId)}  |
-                 2004
+                {randomArtwork.title} | {getArtistName(randomArtwork.userId)} |
+                2004
               </ArtLink>
             )}
           </UserInfo>
@@ -100,4 +104,4 @@ const Header: React.FC<ArtworkPrewProps> = ({ users }) => {
   );
 };
 
-export default Header;
+export default HeaderComponent;

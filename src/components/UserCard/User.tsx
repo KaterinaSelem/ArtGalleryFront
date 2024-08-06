@@ -1,7 +1,7 @@
-import { Component } from "react";
-import { BornLives, BornLivesWrap, CardWrapper, DescriptionInfo, DescriptionWrap, UserCardContent, UserCardPar, UserCardWrapper, UserImage, UserTitle, WrapBtn, WrapInfo, WrapTitle } from "./styles";
-import './styles.css';
-import { ButtonStyled } from "../Button/styles";
+import { Component } from 'react';
+import { BornLives, BornLivesWrap, CardWrapper, DescriptionInfo, DescriptionWrap, UserCardContent, UserCardPar, UserCardWrapper, UserImage, UserTitle, WrapBtn, WrapInfo, WrapTitle } from './styles';
+
+import { ButtonStyled } from '../Button/styles';
 
 export interface IUser {
     id: number;
@@ -65,7 +65,7 @@ interface IUserProps{
     }
   }
   
-  export default User;
+export default User;
   
 
 
