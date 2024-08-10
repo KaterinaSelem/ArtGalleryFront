@@ -8,6 +8,7 @@ import {
   HeaderWrapBlck,
   HeaderWrapWht,
   Icon,
+  IconLock,
   Logo,
   Nav,
   NavLink,
@@ -15,19 +16,35 @@ import {
   WrapIcons,
   WrapUserInfo,
 } from './styles';
-import { IUser } from '../../components/UserCard/User';
+import { IUser } from '../../components/UserCard/types';
+import { Link } from 'react-router-dom';
 
-export interface ArtworkPrewProps {
-  users: IUser[];
-}
 
-const HeaderComponent: React.FC<ArtworkPrewProps> = ({ users }) => {
+
+const HeaderComponent: React.FC<IUser> = () => {
   const [randomArtwork, setRandomArtwork] = useState<IArtwork | null>(null);
+
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch('/api/users')
+      .then((response) => response.json())
+      .then((user: IUser[]) => {
+        setUsers(user);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching artworks:', error);
+        setIsLoading(false);
+      });
+  }, []);
+
 
   useEffect(() => {
     const fetchRandomArtwork = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/works');
+        const response = await fetch('/api/works');
         const data = await response.json();
 
         if (Array.isArray(data)) {
@@ -65,7 +82,7 @@ const HeaderComponent: React.FC<ArtworkPrewProps> = ({ users }) => {
         <WrapUserInfo>
           <UserInfo>
             {randomArtwork && (
-              <ArtLink to={`/artwork/${randomArtwork.id}`}>
+              <ArtLink to={`/works/${randomArtwork.id}`}>
                 {randomArtwork.title} | {getArtistName(randomArtwork.userId)} |
                 2004
               </ArtLink>
@@ -88,15 +105,19 @@ const HeaderComponent: React.FC<ArtworkPrewProps> = ({ users }) => {
       <HeaderWrapWht>
         <HeaderContainer>
           <Nav>
-            <NavLink to='/artists'>ARTISTS</NavLink>
-            <NavLink to='/galleries'>GALLERIES</NavLink>
+            <NavLink to='/users'>ARTISTS</NavLink>
+            <NavLink to='/works'>GALLERY</NavLink>
           </Nav>
-          <Logo>
-            <img src='src/assets/logo.svg' alt='Favorites'></img>
-          </Logo>
+          <Link to='/'>
+            <Logo>
+              <img src='/assets/logo.svg' alt='HomePage'></img>
+            </Logo>
+          </Link>
           <WrapIcons>
-            <Icon src='src/assets/Heart.png' alt='Favorites' />
-            <Icon src='src/assets/Lock.png' alt='Login' />
+            <Icon src='/assets/Heart.png' alt='Favorites' />
+            <Link to='/login'>
+              <IconLock src='/assets/Lock.png' alt='Login' />
+            </Link>
           </WrapIcons>
         </HeaderContainer>
       </HeaderWrapWht>

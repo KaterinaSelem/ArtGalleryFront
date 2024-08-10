@@ -92,7 +92,7 @@ export const ArtTitle = styled.h1`
   margin-bottom: 16px;
 `;
 
-export const Artist = styled.h2`
+export const ArtistStyled = styled.h2`
   font-size: 16px;
   font-weight: 400;
   color: #707070;

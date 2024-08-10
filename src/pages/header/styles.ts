@@ -87,8 +87,8 @@ export const WrapUserInfo = styled.div`
   height: 40px;
   background-color: black;
   width: 80%;
-  align-self: center;
-  margin-left: 150px;
+  align-items: center;
+  margin-left: 130px;
 `;
 
 export const UserInfo = styled.div`
@@ -98,6 +98,15 @@ export const UserInfo = styled.div`
   width: 80%;
   justify-content: center;
   padding-left: 130px;
+  align-self: center;
+  margin-left: 130px ;
+`;
+
+export const IconLock = styled.img`
+  cursor: pointer;
+  &:hover {
+    content: url('/assets/LockGray.png');
+  }
 `;
 
 export const Icon = styled.img`

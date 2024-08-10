@@ -161,3 +161,54 @@ text-align: center;
 `;
 
 
+
+export const HomePageComponent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-image: url('public/assets/backgroundHome.jpg');
+  background-size: cover;
+  height: 800px;
+  padding: 20px;
+  box-sizing: border-box;
+  padding-bottom: 80px;
+  padding-left: 150px;
+  
+`;
+
+export const StyledList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+  max-height: 900px;
+  overflow-y: auto; /* Scroll if content overflows */
+  color: #FFF;
+  font-family: Barlow;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 50px;
+  margin-top: 20px;
+  box-sizing: border-box;
+`;
+
+
+export const StyledLink = styled(Link)`
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  background: transparent;
+  margin-right: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: #D9D9D9;
+  }
+
+  /* &.active {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+  } */
+`;
+
+

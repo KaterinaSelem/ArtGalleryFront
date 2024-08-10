@@ -1,48 +1,64 @@
-import { Component } from "react";
-import  { IUser } from "./types";
-import User from "./User";
+import { useEffect, useState } from 'react';
+import { HomePageComponent, StyledLink, StyledList } from './styles';
+import { IUser } from '../../components/UserCard/types';
+import { ICategory } from './AllUsers';
 
-interface IUserListState{
-  users: IUser[];
-  isLoading: boolean;
-}
+const UserList: React.FC = () => {
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-export class UserList extends Component<Record<string, never>, IUserListState> {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.state = {
-      users: [],
-      isLoading: false,
+  useEffect(() => {
+    const fetchUsersAndRoles = async () => {
+      try {
+        // Fetching users and roles
+        const usersResponse = await fetch('/api/users');
+        const rolesResponse = await fetch('/api/roles');
+
+        const usersData: IUser[] = await usersResponse.json();
+        const rolesData: ICategory[] = await rolesResponse.json();
+
+        // Filter roles by role_id === 3
+        const filteredRoles = rolesData.filter(role => role.role_id === 3);
+
+        // Get only the users whose IDs are in the filtered roles
+        const filteredUsers = usersData.filter(user => 
+          filteredRoles.filter(role => role.user_id === user.id)
+        );
+
+        setUsers(filteredUsers);
+      } catch (error) {
+        console.error('Error fetching users or roles:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
+
+    fetchUsersAndRoles();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className='spinner-border text-primary' role='status'>
+        <span className='visually-hidden'>Loading...</span>
+      </div>
+    );
   }
-  componentDidMount() {
-    this.setState({ ...this.state, isLoading: true });
-    fetch("/api/users")
-      .then((response) => response.json())
-      .then((data: IUser[]) => {
-        this.setState({ users: data, isLoading: false });
-      });
 
-    }
- 
-  render() {
-    const { users, isLoading } = this.state;
-
-return isLoading ? (
-  <div className="spinner-border text-primary" role="status">
-    <span className="visually-hidden">Loading...</span>
-  </div>
-
-) : (
-  <div>
-    {users.map((user) => (
-      <User key={user.id} user={user} />
- 
-    ))}
-  </div>
-);
-}
-}
-
+  return (
+    <HomePageComponent>
+      <StyledList>
+        {users.length === 0 ? (
+          <p>No users found with the specified role.</p>
+        ) : (
+          users.map((user: IUser) => (
+            <p key={user.id}>
+              <StyledLink to={`/users/${user.id}`}>{user.name}</StyledLink>
+            </p>
+          ))
+        )}
+      </StyledList>
+    </HomePageComponent>
+  );
+};
 
 export default UserList;

@@ -1,3 +1,5 @@
+import { IUser } from "../UserCard/types";
+
 
 
 export interface IArtwork {
@@ -7,12 +9,7 @@ export interface IArtwork {
     categoryId: number;
     artStyle: number;
     comition: boolean;
-    userId: number;
+    userId: IUser['id'];
     description: string;
     image: string;
-}
-
-export interface IArtworkProps {
-    artwork: IArtwork;
-}
-
+  }

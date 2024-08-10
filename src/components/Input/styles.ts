@@ -4,7 +4,7 @@ export const InputComponentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: 99%;
+  width: 100%;
   height: fit-content;
 `;
 
@@ -15,7 +15,7 @@ font-size: 24px;
 font-style: normal;
 font-weight: 400;
 line-height: 28px;
-margin-bottom: 15px;
+margin-bottom: 12px;
 `;
 
 export const InputComponent = styled.input`
@@ -28,6 +28,7 @@ export const InputComponent = styled.input`
   &::placeholder {
     color: #6f6f6f;
   }
+  padding: 10PX;
 `;
 export const ErrorMessage = styled.p`
 color: #B46668;

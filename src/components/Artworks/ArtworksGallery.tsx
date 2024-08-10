@@ -5,7 +5,6 @@ import {
   ArtworkCard,
   ArtworkInfoCard,
   ArtTitle,
-  Artist,
   ArtworkPreveiwcontainer,
   ContainerArtworksGallery,
   Details,
@@ -15,25 +14,37 @@ import {
   Separator,
   Status,
   StatusIndicator,
-  
+  ArtistStyled,
 } from './styles';
 import Pagination from '../Pagination/Pagination';
 import { IUser } from '../UserCard/types';
 
 
 
-export interface ArtworkProps {
-  users: IUser[];
-}
+const ArtworksGalleryPrew: React.FC<IUser> = () => {
 
-const ArtworkPrew: React.FC<ArtworkProps> = ({ users }) => {
+  
   const [artworks, setArtworks] = useState<IArtwork[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [artworksPerPage] = useState<number>(16);
 
-  useEffect(() => { 
-    fetch('http://localhost:8080/api/works')
+  useEffect(() => {
+    fetch('/api/users')
+      .then((response) => response.json())
+      .then((user: IUser[]) => {
+        setUsers(user);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching artworks:', error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/works')
       .then((response) => response.json())
       .then((data: IArtwork[]) => {
         setArtworks(data);
@@ -82,7 +93,7 @@ const ArtworkPrew: React.FC<ArtworkProps> = ({ users }) => {
             style={{ textDecoration: 'none' }}
           >
             <Frame>
-              <StyledArtLinkWorkPreview to={`/artwork/${artwork.id}`}>
+              <StyledArtLinkWorkPreview to={`/works/${artwork.id}`}>
                 <ArtworkCard
                   style={{ backgroundImage: `url(${artwork.image})` }}
                 />
@@ -90,11 +101,11 @@ const ArtworkPrew: React.FC<ArtworkProps> = ({ users }) => {
             </Frame>
             <ArtworkInfoCard>
               <ArtTitle>{artwork.title}</ArtTitle>
-              <Artist>{getArtistName(artwork.userId)}</Artist>
+              <ArtistStyled>{getArtistName(artwork.userId)}</ArtistStyled>
               <Details>
                 <span>{artwork.categoryId}</span>
                 <Separator>|</Separator>
-                <Artist>On sale</Artist>
+                <ArtistStyled>On sale</ArtistStyled>
                 <Status>
                   {artwork.comition}
                   <StatusIndicator />
@@ -113,4 +124,4 @@ const ArtworkPrew: React.FC<ArtworkProps> = ({ users }) => {
   );
 };
 
-export default ArtworkPrew;
+export default ArtworksGalleryPrew;

@@ -25,10 +25,10 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
   
       <PaginationIndicator progress={(currentPage / totalPages) * 100} />
       <PaginationButton onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
-        <img src={currentPage === 1 ? "/src/assets/LeftInactive.svg" : "/src/assets/LeftActive.svg"} alt="Previous" />
+        <img src={currentPage === 1 ? "/assets/LeftInactive.svg" : "/assets/LeftActive.svg"} alt="Previous" />
       </PaginationButton>
       <PaginationButton onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-        <img src={currentPage === totalPages ? "/src/assets/RightInactive.svg" : "/src/assets/RightActive.svg"} alt="Next" />
+        <img src={currentPage === totalPages ? "/assets/RightInactive.svg" : "/assets/RightActive.svg"} alt="Next" />
       </PaginationButton>
     </PaginationContainer>
   );

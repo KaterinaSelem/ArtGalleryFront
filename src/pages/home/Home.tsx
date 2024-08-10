@@ -6,7 +6,7 @@ function Home() {
   return (
     <>
       <Hero />
-      <ArtworkPrew users={[]} />
+      <ArtworkPrew id={0} name={''} email={''} password={''} userRole={{ id: 0, title: '' }} bornCity={''} liveCity={''} exhibition={[]} description={''} image={''} />
       <AllUsers />
     </>
   );
