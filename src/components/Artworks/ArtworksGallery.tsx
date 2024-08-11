@@ -19,11 +19,7 @@ import {
 import Pagination from '../Pagination/Pagination';
 import { IUser } from '../UserCard/types';
 
-
-
 const ArtworksGalleryPrew: React.FC<IUser> = () => {
-
-  
   const [artworks, setArtworks] = useState<IArtwork[]>([]);
   const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -79,7 +75,6 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
 
   const getArtistName = (userId: number) => {
     const matchedUser = users.find((user) => userId == user.id);
-    console.log(matchedUser);
     return matchedUser ? matchedUser.name : 'Unknown Artist';
   };
 
@@ -108,7 +103,7 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
                 <ArtistStyled>On sale</ArtistStyled>
                 <Status>
                   {artwork.comition}
-                  <StatusIndicator />
+                  <StatusIndicator comition={artwork.comition} />
                 </Status>
               </Details>
             </ArtworkInfoCard>

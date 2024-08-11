@@ -113,6 +113,14 @@ export const Icon = styled.img`
   cursor: pointer;
 `;
 
+export const IconUser = styled.img`
+  cursor: pointer;
+  &:hover {
+    content: url('/assets/user_passive.gif');
+  }
+`;
+
+
 export const ButtonDiv = styled.div`
   display: inline-flex;
   padding: 10px 27px 10px 27px;

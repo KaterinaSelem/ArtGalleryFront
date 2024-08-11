@@ -77,6 +77,8 @@ flex-direction: column;
 width: 528px;
 flex-shrink: 0;`
 
+
+
 export const DescriptionInfo = styled.div`
 color: #000;
 text-align: justify;
@@ -196,15 +198,19 @@ export const StyledLink = styled(Link)`
   } */
 `;
 
-export const UserImage = styled.div`
-  width: 400px;
+export const UserImage = styled.img`
+width: auto;
   height: 400px;
-  background-image: url(' src={user?.image}'); /* Replace with your image path */
-  background-size: cover; /* Cover the area while maintaining aspect ratio */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Prevent image repetition */
-  flex-shrink: 0;
-  padding: 45px 0 0 109px; /* Adjust padding as needed */
+
+  
 `;
+
+export const PhotoWrap = styled.div`
+display: flex;
+flex-direction: column;
+width: fit-content;
+flex-shrink: 0;
+margin-left: 105px;
+margin-top: 40px;`
 
 

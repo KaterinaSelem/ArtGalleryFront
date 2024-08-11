@@ -5,6 +5,7 @@ export const UsersWrap = styled.div`
   display: flex;
   background-color: #F4F4F4;`
 
+
 export const CardWrapper = styled.div`
 display: flex;
 width: 100%;
@@ -89,7 +90,7 @@ line-height: 24px;
 `
 
 export const UserImage = styled.div`
-width: 400px;
+width: 100%;
 height: 400px;
 flex-shrink: 0;
 padding: 45px 0px 0px 109px;
@@ -119,6 +120,17 @@ line-height: var(--Display-Medium-Line-Height, 52px);
     color: #D9D9D9;
   };
   align-self: center;`
+
+export const ContainerArtists = styled.div`
+width: 1440px;
+height: 750px;
+flex-shrink: 0;
+padding: 12px 0px 0px 60px;
+font-family: Barlow;
+background-color: #F4F4F4;
+margin-left: 60px;
+margin-top: 60px;
+`;
 
 export const Container = styled.div`
 width: 1440px;
@@ -166,7 +178,7 @@ export const HomePageComponent = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-image: url('public/assets/backgroundHome.jpg');
+  background-image: url('/assets/backgroundHome.jpg');
   background-size: cover;
   height: 800px;
   padding: 20px;
@@ -186,7 +198,7 @@ export const StyledList = styled.div`
   font-size: 32px;
   font-style: normal;
   font-weight: 400;
-  line-height: 50px;
+  line-height: 60px;
   margin-top: 20px;
   box-sizing: border-box;
 `;

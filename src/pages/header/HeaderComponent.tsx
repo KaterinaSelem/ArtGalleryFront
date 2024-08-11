@@ -7,8 +7,8 @@ import {
   HeaderWrap,
   HeaderWrapBlck,
   HeaderWrapWht,
-  Icon,
   IconLock,
+  IconUser,
   Logo,
   Nav,
   NavLink,
@@ -114,7 +114,9 @@ const HeaderComponent: React.FC<IUser> = () => {
             </Logo>
           </Link>
           <WrapIcons>
-            <Icon src='/assets/Heart.png' alt='Favorites' />
+          <Link to='/users/profile/'>
+            <IconUser src='/assets/user_active.gif' alt='User' />
+            </Link>
             <Link to='/login'>
               <IconLock src='/assets/Lock.png' alt='Login' />
             </Link>

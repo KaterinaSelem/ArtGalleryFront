@@ -42,8 +42,8 @@ function LoginForm() {
         console.log(response.data);
         localStorage.setItem('accessToken', response.data.accessToken);
         resetForm();
-        if (response.status === 201) {
-          navigate('/Home');
+        if (response.status === 200) {
+          navigate('/');
         }
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

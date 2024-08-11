@@ -9,12 +9,8 @@ import {
   UsersWrap,
 } from './styles';
 import Pagination from '../Pagination/Pagination';
+import { IRole } from './UserList';
 
-export interface ICategory {
-  id: number;
-  user_id: IUser['id'];
-  role_id: number;
-}
 
 export const UsersContext = createContext<IUser[]>([]);
 
@@ -25,21 +21,18 @@ const AllUsers: React.FC = () => {
   const [usersPerPage] = useState<number>(4);
 
   useEffect(() => {
-    const fetchUsersAndRoles = async () => {
+    const fetchRolesAndUsers = async () => {
       try {
-        // Fetching users and roles
+        const rolesResponse = await fetch(`/api/user-roles`);
+        const rolesData: IRole[] = await rolesResponse.json();
+
+        const filteredRoles = rolesData.filter(role => role.roleId === 3);
+
         const usersResponse = await fetch('/api/users');
-        const rolesResponse = await fetch('/api/roles');
-
         const usersData: IUser[] = await usersResponse.json();
-        const rolesData: ICategory[] = await rolesResponse.json();
 
-        // Filter roles by role_id === 3
-        const filteredRoles = rolesData.filter(role => role.role_id === 3);
-
-        // Get only the users whose IDs are in the filtered roles
-        const filteredUsers = usersData.filter(user => 
-          filteredRoles.filter(role => role.user_id === user.id)
+        const filteredUsers = usersData.filter(user =>
+          filteredRoles.some(role => role.userId === user.id)
         );
 
         setUsers(filteredUsers);
@@ -50,7 +43,8 @@ const AllUsers: React.FC = () => {
       }
     };
 
-    fetchUsersAndRoles();
+    fetchRolesAndUsers();
+
   }, []);
 
   if (isLoading) {
@@ -61,13 +55,6 @@ const AllUsers: React.FC = () => {
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className='spinner-border text-primary' role='status'>
-        <span className='visually-hidden'>Loading...</span>
-      </div>
-    );
-  }
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;

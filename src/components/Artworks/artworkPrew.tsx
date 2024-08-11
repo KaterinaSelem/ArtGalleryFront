@@ -82,7 +82,6 @@ const ArtworkPrew: React.FC<IUser> = () => {
 
   const getArtistName = (userId: number) => {
     const matchedUser = users.find((user) => userId === user.id);
-    console.log('Matched User:', matchedUser);
     return matchedUser ? matchedUser.name : 'Unknown Artist';
   };
 
@@ -112,7 +111,7 @@ const ArtworkPrew: React.FC<IUser> = () => {
                 <ArtistStyled>On sale</ArtistStyled>
                 <Status>
                   {artwork.comition}
-                  <StatusIndicator />
+                  <StatusIndicator comition={artwork.comition} />
                 </Status>
               </Details>
             </ArtworkInfoCard>

@@ -1,28 +1,32 @@
 import { useEffect, useState } from 'react';
 import { HomePageComponent, StyledLink, StyledList } from './styles';
-import { IUser } from '../../components/UserCard/types';
-import { ICategory } from './AllUsers';
+import { IUser } from './types';
+
+
+
+export interface IRole {
+  id: number;
+  userId: IUser['id'];
+  roleId: number;
+}
 
 const UserList: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchUsersAndRoles = async () => {
+    const fetchRolesAndUsers = async () => {
       try {
-        // Fetching users and roles
+        const rolesResponse = await fetch(`/api/user-roles`);
+        const rolesData: IRole[] = await rolesResponse.json();
+
+        const filteredRoles = rolesData.filter(role => role.roleId === 3);
+
         const usersResponse = await fetch('/api/users');
-        const rolesResponse = await fetch('/api/roles');
-
         const usersData: IUser[] = await usersResponse.json();
-        const rolesData: ICategory[] = await rolesResponse.json();
 
-        // Filter roles by role_id === 3
-        const filteredRoles = rolesData.filter(role => role.role_id === 3);
-
-        // Get only the users whose IDs are in the filtered roles
-        const filteredUsers = usersData.filter(user => 
-          filteredRoles.filter(role => role.user_id === user.id)
+        const filteredUsers = usersData.filter(user =>
+          filteredRoles.some(role => role.userId === user.id)
         );
 
         setUsers(filteredUsers);
@@ -33,7 +37,7 @@ const UserList: React.FC = () => {
       }
     };
 
-    fetchUsersAndRoles();
+    fetchRolesAndUsers();
   }, []);
 
   if (isLoading) {
@@ -43,6 +47,7 @@ const UserList: React.FC = () => {
       </div>
     );
   }
+
 
   return (
     <HomePageComponent>

@@ -1,0 +1,36 @@
+.field {
+    border: solid 1px #514F4F;
+    background: #F4F4F4;
+    height: 48px;
+    padding: 0 16px;
+    color: #514F4F;
+font-family: Barlow;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 28px;
+
+}
+
+.fieldDescript {
+    display: block;
+    border: solid 1px #514F4F;
+    background: #F4F4F4;
+    height: 160px;
+    padding: 0 16px;
+    color: #514F4F;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    resize: none;
+  }
+  
+  .textField {
+   
+    font-family: Barlow;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: auto;
+  }
+
+  

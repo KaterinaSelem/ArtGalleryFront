@@ -8,6 +8,7 @@ import {
   CardWrapper,
   DescriptionInfo,
   DescriptionWrap,
+  PhotoWrap,
   Title,
   UserCardContent,
   UserCardPar,
@@ -40,7 +41,7 @@ const Artist: React.FC = () => {
   const [user, setUser] = useState<IUser | null>(null);
   const { id } = useParams<{ id: string }>();
   const [artworks, setArtworks] = useState<IArtwork[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [artworksPerPage] = useState<number>(4);
 
@@ -70,7 +71,6 @@ const Artist: React.FC = () => {
           );
           setArtworks(filteredArtworks);
           setIsLoading(false);
-          console.log(artworks);
         })
         .catch((error) => {
           console.error('Error fetching artworks:', error);
@@ -79,13 +79,13 @@ const Artist: React.FC = () => {
     }
   }, [artworks, user]);
 
-  if (isLoading) {
-    return (
-      <div className='spinner-border text-primary' role='status'>
-        <span className='visually-hidden'>Loading...</span>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className='spinner-border text-primary' role='status'>
+  //       <span className='visually-hidden'>Loading...</span>
+  //     </div>
+  //   );
+  // }
 
   const indexOfLastArtwork = currentPage * artworksPerPage;
   const indexOfFirstArtwork = indexOfLastArtwork - artworksPerPage;
@@ -102,9 +102,10 @@ const Artist: React.FC = () => {
 
   const getArtistName = (userId: number) => {
     const userName = userId === user?.id ? user.name : 'Unknown Artist';
-    console.log(userName);
     return userName;
   }
+
+  const artistImage = user?.image;
 
   return (
     <>
@@ -117,15 +118,15 @@ const Artist: React.FC = () => {
             <BornLivesWrap>
               <BornLives>
                 <UserCardPar>Born:</UserCardPar>
-                <UserCardContent> {user?.bornCity}</UserCardContent>
+                <UserCardContent> London </UserCardContent>
               </BornLives>
               <BornLives>
                 <UserCardPar>Lives:</UserCardPar>
-                <UserCardContent> {user?.liveCity}</UserCardContent>
+                <UserCardContent>Bristol</UserCardContent>
               </BornLives>
               <BornLives>
                 <UserCardPar>Exhibition: </UserCardPar>
-        
+                <UserCardContent>Fine art gallery, NY, 2001</UserCardContent>
               </BornLives>
             </BornLivesWrap>
             <DescriptionWrap>
@@ -136,11 +137,11 @@ const Artist: React.FC = () => {
                 </ButtonStyled>
               </WrapBtn>
             </DescriptionWrap>
-            <DescriptionWrap>
-              <UserImage />
-                
+            <PhotoWrap>
               
-            </DescriptionWrap>
+                <UserImage src={artistImage}/>
+              
+            </PhotoWrap>
           </WrapInfo>
         </UserCardWrapper>
       </CardWrapper>
@@ -167,9 +168,9 @@ const Artist: React.FC = () => {
                   <Separator>|</Separator>
                   <ArtistStyled>On sale</ArtistStyled>
                   <Status>
-                    {artwork.comition}
-                    <StatusIndicator />
-                  </Status>
+                  {artwork.comition}
+                  <StatusIndicator comition={artwork.comition} />
+                </Status>
                 </Details>
               </ArtworkInfoCard>
             </ArtworkPreveiwcontainer>

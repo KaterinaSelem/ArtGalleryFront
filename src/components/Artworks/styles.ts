@@ -65,15 +65,34 @@ export const Frame = styled.div`
   background-size: cover;
   background-color: #cecdcd;
   justify-content: center;
-  align-items: center;`
+  align-items: center;
+  `
   
 
-export const ArtworkCard = styled.div`
+  export const ArtworkCard = styled.div`
   display: flex;
   height: 220px;
   width: 280px;
   background-size: cover;
-`
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.3s ease; 
+  }
+
+  &:hover::after {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+`;
  
 
 export const ArtworkInfoCard = styled.div`
@@ -116,10 +135,10 @@ export const Status = styled.span`
   align-items: center;
 `;
 
-export const StatusIndicator = styled.span`
+export const StatusIndicator = styled.span<{ comition: boolean }>`
   width: 8px;
   height: 8px;
-  background-color: green;
+  background-color: ${({ comition }) => (comition ? 'green' : '#bcbcbc')};
   border-radius: 50%;
   margin-left: 4px;
 `;

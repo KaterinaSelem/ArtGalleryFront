@@ -1,36 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { ErrorMessage, Field } from 'formik';
 import * as Yup from 'yup';
 import { EDIT_FIELD_NAMES, EditFormValues } from './types';
+import { Form, Formik } from 'formik';
 import Button from '../Button/Button';
+import { EditComponentContainer, EditLabel, EditWrap, LoadPhoto } from './styles';
+import { LoginName } from '../LoginForm/styles';
+import './styles.css';
 
 interface User extends EditFormValues {
   id: number;
   password: string;
-  userRole: { id: number; title: string };
 }
 
 const EditUser: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/users/${id}`);
-        const userData = await response.json();
+        const response = await fetch(`/api/users/profile`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const contentType = response.headers.get('content-type');
+        let userData;
+
+        if (contentType && contentType.includes('application/json')) {
+          userData = await response.json();
+        } else {
+          const textResponse = await response.text();
+          console.error('Expected JSON, got:', textResponse);
+          return;
+        }
+
         setUser(userData);
       } catch (error) {
         console.error('Error fetching user:', error);
       }
     };
 
-    if (id) {
-      fetchUser();
-    }
-  }, [id]);
+    fetchUser();
+  }, []);
 
   const validationSchema = Yup.object({
     [EDIT_FIELD_NAMES.NAME]: Yup.string()
@@ -46,7 +63,6 @@ const EditUser: React.FC = () => {
     [EDIT_FIELD_NAMES.LIVECITY]: Yup.string()
       .max(50, 'Max 50 symbols')
       .min(2, 'Min 2 symbols'),
-    [EDIT_FIELD_NAMES.EXHIBITION]: Yup.array().of(Yup.string().max(50, 'Max 50 symbols')),
     [EDIT_FIELD_NAMES.DESCRIPTION]: Yup.string()
       .max(200, 'Max 200 symbols'),
     [EDIT_FIELD_NAMES.IMAGE]: Yup.string().url('Invalid URL'),
@@ -55,17 +71,18 @@ const EditUser: React.FC = () => {
   const handleSubmit = async (values: EditFormValues) => {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       formData.append(key, (values as any)[key]);
     });
-    if (imageFile) {
-      formData.append('image', imageFile);
+
+    if (user && user.image) {
+      formData.append('image', user.image);
     }
 
     try {
-      const response = await fetch(`/api/users/${id}`, {
+      const response = await fetch(`/api/users/${id}/updateFields`, {
         method: 'PUT',
         body: formData,
+        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
       });
 
       if (response.ok) {
@@ -84,15 +101,14 @@ const EditUser: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>Edit User</h1>
+    <EditWrap>
+      <LoginName>Edit User</LoginName>
       <Formik
         initialValues={{
           [EDIT_FIELD_NAMES.NAME]: user.name,
           [EDIT_FIELD_NAMES.EMAIL]: user.email,
           [EDIT_FIELD_NAMES.BORNCITY]: user.bornCity,
           [EDIT_FIELD_NAMES.LIVECITY]: user.liveCity,
-          [EDIT_FIELD_NAMES.EXHIBITION]: user.exhibition,
           [EDIT_FIELD_NAMES.DESCRIPTION]: user.description,
           [EDIT_FIELD_NAMES.IMAGE]: user.image,
         }}
@@ -102,63 +118,59 @@ const EditUser: React.FC = () => {
       >
         {({ isSubmitting, setFieldValue }) => (
           <Form>
-            <div>
-              <label htmlFor={EDIT_FIELD_NAMES.NAME}>Name</label>
-              <Field name={EDIT_FIELD_NAMES.NAME} type="text" />
-              <ErrorMessage name={EDIT_FIELD_NAMES.NAME} component="div" />
-            </div>
+            <EditComponentContainer>
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.NAME}>Name
+                <Field name={EDIT_FIELD_NAMES.NAME} type="text" className='field' />
+                <ErrorMessage name={EDIT_FIELD_NAMES.NAME as string} component="div" />
+              </EditLabel>
+            </EditComponentContainer>
 
-            <div>
-              <label htmlFor={EDIT_FIELD_NAMES.EMAIL}>Email</label>
-              <Field name={EDIT_FIELD_NAMES.EMAIL} type="email" />
-              <ErrorMessage name={EDIT_FIELD_NAMES.EMAIL} component="div" />
-            </div>
+            <EditComponentContainer>
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.EMAIL}>Email
+                <Field name={EDIT_FIELD_NAMES.EMAIL} type="email" className='field' />
+              </EditLabel>
+            </EditComponentContainer>
 
-            <div>
-              <label htmlFor={EDIT_FIELD_NAMES.BORNCITY}>Born City</label>
-              <Field name={EDIT_FIELD_NAMES.BORNCITY} type="text" />
-              <ErrorMessage name={EDIT_FIELD_NAMES.BORNCITY} component="div" />
-            </div>
+            <EditComponentContainer>
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.BORNCITY}>Born City
+                <Field name={EDIT_FIELD_NAMES.BORNCITY} type="text" className='field' />
+              </EditLabel>
+            </EditComponentContainer>
 
-            <div>
-              <label htmlFor={EDIT_FIELD_NAMES.LIVECITY}>Live City</label>
-              <Field name={EDIT_FIELD_NAMES.LIVECITY} type="text" />
-              <ErrorMessage name={EDIT_FIELD_NAMES.LIVECITY} component="div" />
-            </div>
+            <EditComponentContainer>
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.LIVECITY}>Live City
+                <Field name={EDIT_FIELD_NAMES.LIVECITY} type="text" className='field' />
+              </EditLabel>
+            </EditComponentContainer>
 
-            <div>
-              <label htmlFor={EDIT_FIELD_NAMES.EXHIBITION}>Exhibition</label>
-              <Field name={EDIT_FIELD_NAMES.EXHIBITION} type="text" />
-              <ErrorMessage name={EDIT_FIELD_NAMES.EXHIBITION} component="div" />
-            </div>
+            <EditComponentContainer>
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.DESCRIPTION}>Description
+                <Field name={EDIT_FIELD_NAMES.DESCRIPTION} as="textarea" className='fieldDescript textField' />
+              </EditLabel>
+            </EditComponentContainer>
 
-            <div>
-              <label htmlFor={EDIT_FIELD_NAMES.DESCRIPTION}>Description</label>
-              <Field name={EDIT_FIELD_NAMES.DESCRIPTION} type="text" />
-              <ErrorMessage name={EDIT_FIELD_NAMES.DESCRIPTION} component="div" />
-            </div>
+            <EditComponentContainer>
+              <LoadPhoto>
+                <EditLabel htmlFor={EDIT_FIELD_NAMES.IMAGE}>Image File
+                  <input
+                    id={EDIT_FIELD_NAMES.IMAGE}
+                    name={EDIT_FIELD_NAMES.IMAGE}
+                    type="file"
+                    accept=".jpg"
+                    onChange={(event) => {
+                      const file = event.currentTarget.files?.[0];
+                      setFieldValue(EDIT_FIELD_NAMES.IMAGE, file?.name || '');
+                    }}
+                  />
+                </EditLabel>
+              </LoadPhoto>
+            </EditComponentContainer>
 
-            <div>
-              <label htmlFor={EDIT_FIELD_NAMES.IMAGE}>Image File</label>
-              <input
-                id={EDIT_FIELD_NAMES.IMAGE}
-                name={EDIT_FIELD_NAMES.IMAGE}
-                type="file"
-                accept=".jpg"
-                onChange={(event) => {
-                  const file = event.currentTarget.files?.[0];
-                  setImageFile(file || null);
-                  setFieldValue(EDIT_FIELD_NAMES.IMAGE, file?.name || '');
-                }}
-              />
-              <ErrorMessage name={EDIT_FIELD_NAMES.IMAGE} component="div" />
-            </div>
-
-            <Button type="submit" disabled={isSubmitting} name = 'SAVE'/>
+            <Button type="submit" disabled={isSubmitting} name='SAVE' />
           </Form>
         )}
       </Formik>
-    </div>
+    </EditWrap>
   );
 };
 
