@@ -5,7 +5,12 @@ import * as Yup from 'yup';
 import { EDIT_FIELD_NAMES, EditFormValues } from './types';
 import { Form, Formik } from 'formik';
 import Button from '../Button/Button';
-import { EditComponentContainer, EditLabel, EditWrap, LoadPhoto } from './styles';
+import {
+  EditComponentContainer,
+  EditLabel,
+  EditWrap,
+  LoadPhoto,
+} from './styles';
 import { LoginName } from '../LoginForm/styles';
 import './styles.css';
 
@@ -22,7 +27,9 @@ const EditUser: React.FC = () => {
     const fetchUser = async () => {
       try {
         const response = await fetch(`/api/users/profile`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
         });
 
         if (!response.ok) {
@@ -54,24 +61,17 @@ const EditUser: React.FC = () => {
       .required('Field name required!')
       .max(50, 'Max 50 symbols')
       .min(2, 'Min 2 symbols'),
-    [EDIT_FIELD_NAMES.EMAIL]: Yup.string()
-      .required('Field email required!')
-      .email('Field type email'),
-    [EDIT_FIELD_NAMES.BORNCITY]: Yup.string()
-      .max(50, 'Max 50 symbols')
-      .min(2, 'Min 2 symbols'),
-    [EDIT_FIELD_NAMES.LIVECITY]: Yup.string()
-      .max(50, 'Max 50 symbols')
-      .min(2, 'Min 2 symbols'),
-    [EDIT_FIELD_NAMES.DESCRIPTION]: Yup.string()
-      .max(200, 'Max 200 symbols'),
+    [EDIT_FIELD_NAMES.EMAIL]: Yup.string().max(50, 'Max 50 symbols'),
+    [EDIT_FIELD_NAMES.BORNCITY]: Yup.string().max(50, 'Max 50 symbols'),
+    [EDIT_FIELD_NAMES.LIVECITY]: Yup.string().max(50, 'Max 50 symbols'),
+    [EDIT_FIELD_NAMES.DESCRIPTION]: Yup.string().max(200, 'Max 200 symbols'),
     [EDIT_FIELD_NAMES.IMAGE]: Yup.string().url('Invalid URL'),
   });
 
   const handleSubmit = async (values: EditFormValues) => {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
-      formData.append(key, (values as any)[key]);
+      formData.append(key, (values as never)[key]);
     });
 
     if (user && user.image) {
@@ -82,7 +82,9 @@ const EditUser: React.FC = () => {
       const response = await fetch(`/api/users/${id}/updateFields`, {
         method: 'PUT',
         body: formData,
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
       });
 
       if (response.ok) {
@@ -119,44 +121,73 @@ const EditUser: React.FC = () => {
         {({ isSubmitting, setFieldValue }) => (
           <Form>
             <EditComponentContainer>
-              <EditLabel htmlFor={EDIT_FIELD_NAMES.NAME}>Name
-                <Field name={EDIT_FIELD_NAMES.NAME} type="text" className='field' />
-                <ErrorMessage name={EDIT_FIELD_NAMES.NAME as string} component="div" />
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.NAME}>
+                Name
+                <Field
+                  name={EDIT_FIELD_NAMES.NAME}
+                  type='text'
+                  className='field'
+                />
+                <ErrorMessage
+                  name={EDIT_FIELD_NAMES.NAME as string}
+                  component='div'
+                />
               </EditLabel>
             </EditComponentContainer>
 
             <EditComponentContainer>
-              <EditLabel htmlFor={EDIT_FIELD_NAMES.EMAIL}>Email
-                <Field name={EDIT_FIELD_NAMES.EMAIL} type="email" className='field' />
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.EMAIL}>
+                Email
+                <Field
+                  name={EDIT_FIELD_NAMES.EMAIL}
+                  type='email'
+                  className='field'
+                />
               </EditLabel>
             </EditComponentContainer>
 
             <EditComponentContainer>
-              <EditLabel htmlFor={EDIT_FIELD_NAMES.BORNCITY}>Born City
-                <Field name={EDIT_FIELD_NAMES.BORNCITY} type="text" className='field' />
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.BORNCITY}>
+                Born City
+                <Field
+                  name={EDIT_FIELD_NAMES.BORNCITY}
+                  type='text'
+                  className='field'
+                />
               </EditLabel>
             </EditComponentContainer>
 
             <EditComponentContainer>
-              <EditLabel htmlFor={EDIT_FIELD_NAMES.LIVECITY}>Live City
-                <Field name={EDIT_FIELD_NAMES.LIVECITY} type="text" className='field' />
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.LIVECITY}>
+                Live City
+                <Field
+                  name={EDIT_FIELD_NAMES.LIVECITY}
+                  type='text'
+                  className='field'
+                />
               </EditLabel>
             </EditComponentContainer>
 
             <EditComponentContainer>
-              <EditLabel htmlFor={EDIT_FIELD_NAMES.DESCRIPTION}>Description
-                <Field name={EDIT_FIELD_NAMES.DESCRIPTION} as="textarea" className='fieldDescript textField' />
+              <EditLabel htmlFor={EDIT_FIELD_NAMES.DESCRIPTION}>
+                Description
+                <Field
+                  name={EDIT_FIELD_NAMES.DESCRIPTION}
+                  as='textarea'
+                  className='fieldDescript textField'
+                />
               </EditLabel>
             </EditComponentContainer>
 
             <EditComponentContainer>
               <LoadPhoto>
-                <EditLabel htmlFor={EDIT_FIELD_NAMES.IMAGE}>Image File
+                <EditLabel htmlFor={EDIT_FIELD_NAMES.IMAGE}>
+                  Image File
                   <input
                     id={EDIT_FIELD_NAMES.IMAGE}
                     name={EDIT_FIELD_NAMES.IMAGE}
-                    type="file"
-                    accept=".jpg"
+                    type='file'
+                    accept='.jpg'
                     onChange={(event) => {
                       const file = event.currentTarget.files?.[0];
                       setFieldValue(EDIT_FIELD_NAMES.IMAGE, file?.name || '');
@@ -166,7 +197,7 @@ const EditUser: React.FC = () => {
               </LoadPhoto>
             </EditComponentContainer>
 
-            <Button type="submit" disabled={isSubmitting} name='SAVE' />
+            <Button type='submit' disabled={isSubmitting} name='SAVE' />
           </Form>
         )}
       </Formik>

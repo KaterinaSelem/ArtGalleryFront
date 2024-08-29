@@ -32,7 +32,7 @@ function UserForm() {
       .required('Confirm Password is required'),
     [USER_FIELD_NAMES.ROLE_ID]: Yup.string()
       .required('Role is required')
-      .oneOf(['1', '2']),
+      .oneOf(['3', '2']),
   });
 
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ function UserForm() {
         const response = await axios.post('/api/register', values);
         console.log(response.data);
         resetForm();
-        if (response.status === 201) {
+        if (response.status === 200) {
           navigate('/login');
         }
       } catch (error) {

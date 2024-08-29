@@ -106,7 +106,7 @@ const ArtworkPrew: React.FC<IUser> = () => {
               <ArtTitle>{artwork.title}</ArtTitle>
               <ArtistStyled>{getArtistName(artwork.userId)}</ArtistStyled>
               <Details>
-                <span>{artwork.categoryId}</span>
+                <span>{artwork.category_id}</span>
                 <Separator>|</Separator>
                 <ArtistStyled>On sale</ArtistStyled>
                 <Status>

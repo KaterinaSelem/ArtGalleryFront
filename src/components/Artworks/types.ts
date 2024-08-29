@@ -6,7 +6,7 @@ export interface IArtwork {
     id: number;
     title: string;
     createdAt: string;
-    categoryId: number;
+    category_id: number;
     artStyle: number;
     comition: boolean;
     userId: IUser['id'];
