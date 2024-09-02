@@ -214,3 +214,25 @@ margin-left: 105px;
 margin-top: 40px;`
 
 
+export const ErrorMessage  = styled.div`
+  color: #7F7D7D;
+text-align: center;
+font-family: Barlow;
+font-size: 36px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+margin-top: 60px;
+  `
+export const NavLinkStyled = styled(Link)`
+color: #7F7D7D;
+font-size: 36px;
+text-decoration: none;
+&:hover {
+  text-decoration: underline;
+}
+font-family: Barlow;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+`;

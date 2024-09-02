@@ -6,6 +6,7 @@ import {
   CardWrapper,
   DescriptionInfo,
   DescriptionWrap,
+  ErrorMessage,
   PhotoWrap,
   UserCardContent,
   UserCardPar,
@@ -14,7 +15,8 @@ import {
   UserTitle,
   WrapBtn,
   WrapInfo,
-  WrapTitle
+  WrapTitle,
+  NavLinkStyled,
 } from  './styles';
 import { ButtonStyled } from '../Button/styles';
 
@@ -68,7 +70,7 @@ const UserProfile: React.FC = () => {
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <ErrorMessage>You have to <NavLinkStyled to='/login'> sign in </NavLinkStyled></ErrorMessage>;
   }
 
   return (

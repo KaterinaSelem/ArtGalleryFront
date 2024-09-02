@@ -36,10 +36,12 @@ import {
   ArtistStyled,
 } from '../../components/Artworks/styles';
 import Pagination from '../../components/Pagination/Pagination';
+import { ICategory } from '../artwork/types';
 
 const Artist: React.FC = () => {
   const [user, setUser] = useState<IUser | null>(null);
   const { id } = useParams<{ id: string }>();
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [artworks, setArtworks] = useState<IArtwork[]>([]);
   const [, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -48,7 +50,7 @@ const Artist: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/users/${id}`);
+        const response = await fetch(`/api/users/artists/${id}`);
         const user = await response.json();
         setUser(user);
       } catch (error) {
@@ -71,6 +73,7 @@ const Artist: React.FC = () => {
           );
           setArtworks(filteredArtworks);
           setIsLoading(false);
+          
         })
         .catch((error) => {
           console.error('Error fetching artworks:', error);
@@ -79,13 +82,28 @@ const Artist: React.FC = () => {
     }
   }, [artworks, user]);
 
-  // if (isLoading) {
-  //   return (
-  //     <div className='spinner-border text-primary' role='status'>
-  //       <span className='visually-hidden'>Loading...</span>
-  //     </div>
-  //   );
-  // }
+  useEffect(() => {
+    if (artworks.length > 0) {
+      const fetchCategories = async () => {
+        try {
+          for (const artwork of artworks) {
+            const response = await fetch(`/api/categories/${artwork.categoryId}`);
+            const category = await response.json();
+            // Assuming you're storing multiple categories, you might want to update your state accordingly.
+            setCategories((prevCategories) => [...prevCategories, category]);
+          }
+        } catch (error) {
+          console.error('Error fetching category:', error);
+        }
+      };
+  
+      fetchCategories();
+    }
+  }, [artworks]);
+
+  if (!user) {
+    return <p>User not found.</p>;
+  }
 
   const indexOfLastArtwork = currentPage * artworksPerPage;
   const indexOfFirstArtwork = indexOfLastArtwork - artworksPerPage;
@@ -105,6 +123,11 @@ const Artist: React.FC = () => {
     return userName;
   }
 
+  const getCategotyTitle = (categoryId: number) => {
+    const categoryTitle = categories.find((category) => category.id === categoryId)?.title;
+    return categoryTitle;
+  }
+
   const artistImage = user?.image;
 
   return (
@@ -118,15 +141,15 @@ const Artist: React.FC = () => {
             <BornLivesWrap>
               <BornLives>
                 <UserCardPar>Born:</UserCardPar>
-                <UserCardContent> London </UserCardContent>
+                <UserCardContent>{user?.bornCity}</UserCardContent>
               </BornLives>
               <BornLives>
                 <UserCardPar>Lives:</UserCardPar>
-                <UserCardContent>Bristol</UserCardContent>
+                <UserCardContent>{user?.liveCity}</UserCardContent>
               </BornLives>
               <BornLives>
                 <UserCardPar>Exhibition: </UserCardPar>
-                <UserCardContent>Fine art gallery, NY, 2001</UserCardContent>
+                <UserCardContent> </UserCardContent>
               </BornLives>
             </BornLivesWrap>
             <DescriptionWrap>
@@ -164,7 +187,7 @@ const Artist: React.FC = () => {
                 <ArtTitle>{artwork.title}</ArtTitle>
                 <ArtistStyled>{getArtistName(artwork.userId)}</ArtistStyled>
                 <Details>
-                  <span>{artwork.categoryId}</span>
+                  <span>{getCategotyTitle(artwork.categoryId)}</span>
                   <Separator>|</Separator>
                   <ArtistStyled>On sale</ArtistStyled>
                   <Status>

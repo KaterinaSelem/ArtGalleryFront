@@ -44,3 +44,20 @@ margin-left: 105px;
 margin-top: 40px;`
 
 
+export const Status = styled.span`
+  display: flex;
+  flex-direction: row;
+    align-items: center;
+    margin-top: 8px;
+`;
+
+export const StatusIndicator = styled.span<{ comition: boolean }>`
+  width: 8px;
+  height: 8px;
+  background-color: ${({ comition }) => (comition ? 'green' : '#bcbcbc')};
+  border-radius: 50%;
+  margin-left: 4px;
+`;
+
+
+

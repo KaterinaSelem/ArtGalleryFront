@@ -17,18 +17,27 @@ import {
   WrapUserInfo,
 } from './styles';
 import { IUser } from '../../components/UserCard/types';
-import { Link } from 'react-router-dom';
-
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/AuthSlice';
+import { RootState } from '../../redux/Store';
 
 const HeaderComponent: React.FC<IUser> = () => {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
   const [randomArtwork, setRandomArtwork] = useState<IArtwork | null>(null);
-
   const [users, setUsers] = useState<IUser[]>([]);
   const [, setIsLoading] = useState<boolean>(true);
+  const [, setIsLoggedIn] = useState<boolean>(false);
+  
 
   useEffect(() => {
-    fetch('/api/users')
+    const token = localStorage.getItem('accessToken');
+    setIsLoggedIn(!!token); 
+
+    fetch('/api/users/artists')
       .then((response) => response.json())
       .then((user: IUser[]) => {
         setUsers(user);
@@ -39,7 +48,6 @@ const HeaderComponent: React.FC<IUser> = () => {
         setIsLoading(false);
       });
   }, []);
-
 
   useEffect(() => {
     const fetchRandomArtwork = async () => {
@@ -68,12 +76,21 @@ const HeaderComponent: React.FC<IUser> = () => {
     fetchRandomArtwork();
   }, []);
 
-  const getArtistName = (userId: number) => {
-    if (!users) return ['Unknown Artist'];
-    const matchedUsers = users.filter((user) => userId === user.id);
-    return matchedUsers.length > 0
-      ? matchedUsers.map((user) => user.name)
-      : ['Unknown Artist'];
+  function getArtistName(artwork: IArtwork) {
+    const matchedUser = users.find((user) => artwork.userId === user.id);
+    if (matchedUser) {
+      console.log('Found artist:', matchedUser.id);
+    } else {
+      console.warn('Artist not found for artwork:', artwork);
+    }
+    return matchedUser ? matchedUser.name : 'Unknown Artist';
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken'); 
+    dispatch(logout());
+    setIsLoggedIn(false); 
+    navigate('/login'); 
   };
 
   return (
@@ -83,8 +100,7 @@ const HeaderComponent: React.FC<IUser> = () => {
           <UserInfo>
             {randomArtwork && (
               <ArtLink to={`/works/${randomArtwork.id}`}>
-                {randomArtwork.title} | {getArtistName(randomArtwork.userId)} |
-                2004
+                {randomArtwork.title}{"  |  "}{getArtistName(randomArtwork)}{"  |  "} {randomArtwork.createdAt}
               </ArtLink>
             )}
           </UserInfo>
@@ -105,7 +121,7 @@ const HeaderComponent: React.FC<IUser> = () => {
       <HeaderWrapWht>
         <HeaderContainer>
           <Nav>
-            <NavLink to='/users'>ARTISTS</NavLink>
+            <NavLink to='/users/artists'>ARTISTS</NavLink>
             <NavLink to='/works'>GALLERY</NavLink>
           </Nav>
           <Link to='/'>
@@ -114,12 +130,21 @@ const HeaderComponent: React.FC<IUser> = () => {
             </Logo>
           </Link>
           <WrapIcons>
-          <Link to='/users/profile/'>
-            <IconUser src='/assets/user_active.gif' alt='User' />
+            <Link to='/users/profile/'>
+              <IconUser src='/assets/user_active.gif' alt='User' />
             </Link>
-            <Link to='/login'>
-              <IconLock src='/assets/Lock.png' alt='Login' />
-            </Link>
+            {isLoggedIn ? (
+              <img
+                src='/assets/exit.png'
+                alt='Logout'
+                onClick={handleLogout} 
+                style={{ cursor: 'pointer' }}
+              />
+            ) : (
+              <Link to='/login'>
+                <IconLock src='/assets/Lock.png' alt='Login' />
+              </Link>
+            )}
           </WrapIcons>
         </HeaderContainer>
       </HeaderWrapWht>

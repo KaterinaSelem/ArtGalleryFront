@@ -8,13 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
 import './styles.css';
+import { login } from '../../redux/AuthSlice';
+import { useDispatch } from 'react-redux';
 
 const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{}|\\:;'<>,.?/]+$/;
 
-function LoginForm() {
-
+const LoginForm: React.FC = () => {
+  const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const navigate = useNavigate();
     
   const scheme = Yup.object().shape({
@@ -43,6 +44,7 @@ function LoginForm() {
         localStorage.setItem('accessToken', response.data.accessToken);
         resetForm();
         if (response.status === 200) {
+          dispatch(login(response.data.accessToken))
           navigate('/');
         }
       } catch (error) {

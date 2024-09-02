@@ -1,15 +1,14 @@
-import { IUser } from "../UserCard/types";
 
 
 
-export interface IArtwork {
+  export interface IArtwork {
     id: number;
     title: string;
     createdAt: string;
-    category_id: number;
-    artStyle: number;
+    categoryId: number;
     comition: boolean;
-    userId: IUser['id'];
+    userId: number;
     description: string;
     image: string;
-  }
+
+}

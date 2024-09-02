@@ -1,5 +1,4 @@
 
-
 export interface IUser {
   id: number;
   name: string;
@@ -11,11 +10,6 @@ export interface IUser {
   image: string;
 }
 
-export interface ICategory {
-  id: number;
-  user_id: IUser['id'];
-  role_id: number;
-}
 
 
 

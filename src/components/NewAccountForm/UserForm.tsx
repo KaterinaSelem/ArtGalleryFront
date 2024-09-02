@@ -42,7 +42,7 @@ function UserForm() {
       [USER_FIELD_NAMES.EMAIL]: '',
       [USER_FIELD_NAMES.PASSWORD]: '',
       confirmPassword: '',
-      [USER_FIELD_NAMES.ROLE_ID]: '2',
+      [USER_FIELD_NAMES.ROLE_ID]: 2,
     } as UserFormValues,
     validationSchema,
     validateOnChange: false,
@@ -98,8 +98,8 @@ function UserForm() {
         />
         <RadioGroup
           options={[
-            { value: '1', label: 'I`m an Artist' },
-            { value: '2', label: 'I`m a Visitor' }
+            { value: '2', label: 'I`m an Artist' },
+            { value: '3', label: 'I`m a Visitor' }
           ]}
           onChange={(value) => formik.setFieldValue(USER_FIELD_NAMES.ROLE_ID, value)}
         />

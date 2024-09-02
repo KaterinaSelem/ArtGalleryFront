@@ -3,7 +3,7 @@ export interface UserFormValues {
     name: string;
     email: string;
     password: string;
-    roleId: string;
+    roleId: number;
   }
   
   export enum USER_FIELD_NAMES {

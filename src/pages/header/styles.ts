@@ -123,7 +123,7 @@ export const IconUser = styled.img`
 
 export const ButtonDiv = styled.div`
   display: inline-flex;
-  padding: 10px 27px 10px 27px;
+  padding: 8px 24px 8px 24px;
   justify-content: center;
   align-items: center;
   background: #514f4f;

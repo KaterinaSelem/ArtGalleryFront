@@ -18,23 +18,25 @@ import {
 } from './styles';
 import Pagination from '../Pagination/Pagination';
 import { IUser } from '../UserCard/types';
+import { ICategory } from '../../pages/artwork/types';
 
 const ArtworksGalleryPrew: React.FC<IUser> = () => {
   const [artworks, setArtworks] = useState<IArtwork[]>([]);
   const [users, setUsers] = useState<IUser[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [artworksPerPage] = useState<number>(16);
 
   useEffect(() => {
-    fetch('/api/users')
+    fetch('/api/users/artists')
       .then((response) => response.json())
       .then((user: IUser[]) => {
         setUsers(user);
         setIsLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching artworks:', error);
+        console.error('Error fetching artist:', error);
         setIsLoading(false);
       });
   }, []);
@@ -52,10 +54,32 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (artworks.length > 0) {
+      const fetchCategories = async () => {
+        try {
+          for (const artwork of artworks) {
+            const response = await fetch(`/api/categories/${artwork.categoryId}`);
+            const category = await response.json();
+            // Assuming you're storing multiple categories, you might want to update your state accordingly.
+            setCategories((prevCategories) => [...prevCategories, category]);
+          }
+        } catch (error) {
+          console.error('Error fetching category:', error);
+        }
+      };
+  
+      fetchCategories();
+    }
+  }, [artworks]);
+
+
   if (isLoading) {
     return (
-      <div className='spinner-border text-primary' role='status'>
-        <span className='visually-hidden'>Loading...</span>
+      <div className='d-flex justify-content-center'>
+        <div className='spinner-border text-secondary' role='status'>
+          <span className='visually-hidden'>Loading...</span>
+        </div>
       </div>
     );
   }
@@ -73,10 +97,16 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
     setCurrentPage(pageNumber);
   };
 
-  const getArtistName = (userId: number) => {
-    const matchedUser = users.find((user) => userId == user.id);
+  const getArtistName = (artwork: IArtwork) => {
+    const matchedUser = users.find((user) => artwork.userId === user.id);
+    console.log(matchedUser);
     return matchedUser ? matchedUser.name : 'Unknown Artist';
   };
+
+  const getCategotyTitle = (categoryId: number) => {
+    const categoryTitle = categories.find((category) => category.id === categoryId)?.title;
+    return categoryTitle;
+  }
 
   return (
     <ContainerArtworksGallery>
@@ -96,9 +126,9 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
             </Frame>
             <ArtworkInfoCard>
               <ArtTitle>{artwork.title}</ArtTitle>
-              <ArtistStyled>{getArtistName(artwork.userId)}</ArtistStyled>
+              <ArtistStyled>{getArtistName(artwork)}</ArtistStyled>
               <Details>
-                <span>{artwork.categoryId}</span>
+                <span>{getCategotyTitle(artwork.categoryId)}</span>
                 <Separator>|</Separator>
                 <ArtistStyled>On sale</ArtistStyled>
                 <Status>

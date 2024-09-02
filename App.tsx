@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import GlobalStyles from './src/styles/GlobalStyles';
 import Layout from './src/layout/Layout';
 import Home from './src/pages/home/Home';
@@ -24,7 +25,7 @@ function App() {
           <Route path='login' element={<Login />} /> {/* Keep this route */}
           <Route path='register' element={<Register />} />
           <Route path='users/profile' element={<UserProfile />} />
-          <Route path='users' element={<Artists />} />
+          <Route path='users/artists' element={<Artists />} />
           <Route path='/users/updateUser' element={<EditUser />} />
         </Routes>
       </Layout>

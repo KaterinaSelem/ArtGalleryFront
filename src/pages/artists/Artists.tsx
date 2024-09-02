@@ -8,7 +8,6 @@ import {
   UsersWrap,
 } from './styles';
 import Pagination from '../../components/Pagination/Pagination';
-import { IRole } from '../../components/UserCard/UserList';
 import { UserCardWrap } from './styles';
 
 export const UsersContext = createContext<IUser[]>([]);
@@ -20,35 +19,28 @@ const Artists: React.FC = () => {
   const [usersPerPage] = useState<number>(12);
 
   useEffect(() => {
-    const fetchRolesAndUsers = async () => {
+    const fetchUsers = async () => {
       try {
-        const rolesResponse = await fetch(`/api/user-roles`);
-        const rolesData: IRole[] = await rolesResponse.json();
+        const response = await fetch('/api/users/artists');
+        const data: IUser[] = await response.json(); 
 
-        const filteredRoles = rolesData.filter((role) => role.roleId === 3);
-
-        const usersResponse = await fetch('/api/users');
-        const usersData: IUser[] = await usersResponse.json();
-
-        const filteredUsers = usersData.filter((user) =>
-          filteredRoles.some((role) => role.userId === user.id)
-        );
-
-        setUsers(filteredUsers);
+        setUsers(data);
       } catch (error) {
-        console.error('Error fetching users or roles:', error);
+        console.error('Ups!', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchRolesAndUsers();
+    fetchUsers();
   }, []);
 
   if (isLoading) {
     return (
-      <div className='spinner-border text-primary' role='status'>
-        <span className='visually-hidden'>Loading...</span>
+      <div className='d-flex justify-content-center'>
+        <div className='spinner-border text-secondary' role='status'>
+          <span className='visually-hidden'>Loading...</span>
+        </div>
       </div>
     );
   }
