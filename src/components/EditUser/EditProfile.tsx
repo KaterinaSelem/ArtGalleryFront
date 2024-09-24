@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { ErrorMessage, Field } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { EDIT_FIELD_NAMES, EditFormValues } from './types';
-import { Form, Formik } from 'formik';
 import Button from '../Button/Button';
 import {
   EditComponentContainer,
   EditLabel,
   EditWrap,
-  LoadPhoto,
+  SaveButtonsWrap,
 } from './styles';
 import { LoginName } from '../LoginForm/styles';
 import './styles.css';
 
 interface User extends EditFormValues {
-  id: number;
+  id: string;
   password: string;
 }
 
-const EditUser: React.FC = () => {
+const EditProfile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -46,7 +43,7 @@ const EditUser: React.FC = () => {
           console.error('Expected JSON, got:', textResponse);
           return;
         }
-
+        console.log('Fetched user:', userData);
         setUser(userData);
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -56,40 +53,58 @@ const EditUser: React.FC = () => {
     fetchUser();
   }, []);
 
+  const initialValues: EditFormValues = {
+    [EDIT_FIELD_NAMES.NAME]: user?.name || '',
+    [EDIT_FIELD_NAMES.EMAIL]: user?.email || '',
+    [EDIT_FIELD_NAMES.BORNCITY]: user?.bornCity || '',
+    [EDIT_FIELD_NAMES.LIVECITY]: user?.liveCity || '',
+    [EDIT_FIELD_NAMES.DESCRIPTION]: user?.description || '',
+  };
+
+  console.log('Initial form values:', initialValues);
+
   const validationSchema = Yup.object({
     [EDIT_FIELD_NAMES.NAME]: Yup.string()
-      .required('Field name required!')
       .max(50, 'Max 50 symbols')
       .min(2, 'Min 2 symbols'),
     [EDIT_FIELD_NAMES.EMAIL]: Yup.string().max(50, 'Max 50 symbols'),
     [EDIT_FIELD_NAMES.BORNCITY]: Yup.string().max(50, 'Max 50 symbols'),
     [EDIT_FIELD_NAMES.LIVECITY]: Yup.string().max(50, 'Max 50 symbols'),
-    [EDIT_FIELD_NAMES.DESCRIPTION]: Yup.string().max(200, 'Max 200 symbols'),
-    [EDIT_FIELD_NAMES.IMAGE]: Yup.string().url('Invalid URL'),
+    [EDIT_FIELD_NAMES.DESCRIPTION]: Yup.string(),
   });
 
-  const handleSubmit = async (values: EditFormValues) => {
-    const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      formData.append(key, (values as never)[key]);
-    });
-
-    if (user && user.image) {
-      formData.append('image', user.image);
-    }
+  const handleSubmit = async (
+    values: EditFormValues,
+    { resetForm }: { resetForm: () => void }
+  ) => {
+    console.log('Submitting form with values:', values);
 
     try {
-      const response = await fetch(`/api/users/${id}/updateFields`, {
+      const response = await fetch(`/api/users/updateUser`, {
         method: 'PUT',
-        body: formData,
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
+        body: JSON.stringify(values),
       });
 
+      console.log('response:', response);
+
+      const contentType = response.headers.get('content-type');
+      let updatedUserData;
+
+      if (contentType && contentType.includes('application/json')) {
+        updatedUserData = await response.json();
+      } else {
+        const textResponse = await response.text();
+        console.warn('Expected JSON, got:', textResponse);
+        updatedUserData = { message: textResponse }; 
+      }
+
       if (response.ok) {
-        const updatedUserData = await response.json();
         setUser(updatedUserData);
+        resetForm();
       } else {
         console.error('Failed to update user');
       }
@@ -97,33 +112,22 @@ const EditUser: React.FC = () => {
       console.error('Error updating user:', error);
     }
   };
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <EditWrap>
       <LoginName>Edit User</LoginName>
-      <Formik
-        initialValues={{
-          [EDIT_FIELD_NAMES.NAME]: user.name,
-          [EDIT_FIELD_NAMES.EMAIL]: user.email,
-          [EDIT_FIELD_NAMES.BORNCITY]: user.bornCity,
-          [EDIT_FIELD_NAMES.LIVECITY]: user.liveCity,
-          [EDIT_FIELD_NAMES.DESCRIPTION]: user.description,
-          [EDIT_FIELD_NAMES.IMAGE]: user.image,
-        }}
+      <Formik<EditFormValues>
+        initialValues={initialValues}
         validationSchema={validationSchema}
         enableReinitialize
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, setFieldValue }) => (
+        {({ isSubmitting }) => (
           <Form>
             <EditComponentContainer>
               <EditLabel htmlFor={EDIT_FIELD_NAMES.NAME}>
                 Name
                 <Field
+                  id={EDIT_FIELD_NAMES.NAME}
                   name={EDIT_FIELD_NAMES.NAME}
                   type='text'
                   className='field'
@@ -139,6 +143,7 @@ const EditUser: React.FC = () => {
               <EditLabel htmlFor={EDIT_FIELD_NAMES.EMAIL}>
                 Email
                 <Field
+                  id={EDIT_FIELD_NAMES.EMAIL}
                   name={EDIT_FIELD_NAMES.EMAIL}
                   type='email'
                   className='field'
@@ -150,6 +155,7 @@ const EditUser: React.FC = () => {
               <EditLabel htmlFor={EDIT_FIELD_NAMES.BORNCITY}>
                 Born City
                 <Field
+                  id={EDIT_FIELD_NAMES.BORNCITY}
                   name={EDIT_FIELD_NAMES.BORNCITY}
                   type='text'
                   className='field'
@@ -161,6 +167,7 @@ const EditUser: React.FC = () => {
               <EditLabel htmlFor={EDIT_FIELD_NAMES.LIVECITY}>
                 Live City
                 <Field
+                  id={EDIT_FIELD_NAMES.LIVECITY}
                   name={EDIT_FIELD_NAMES.LIVECITY}
                   type='text'
                   className='field'
@@ -172,32 +179,16 @@ const EditUser: React.FC = () => {
               <EditLabel htmlFor={EDIT_FIELD_NAMES.DESCRIPTION}>
                 Description
                 <Field
+                  id={EDIT_FIELD_NAMES.DESCRIPTION}
                   name={EDIT_FIELD_NAMES.DESCRIPTION}
                   as='textarea'
                   className='fieldDescript textField'
                 />
               </EditLabel>
             </EditComponentContainer>
-
-            <EditComponentContainer>
-              <LoadPhoto>
-                <EditLabel htmlFor={EDIT_FIELD_NAMES.IMAGE}>
-                  Image File
-                  <input
-                    id={EDIT_FIELD_NAMES.IMAGE}
-                    name={EDIT_FIELD_NAMES.IMAGE}
-                    type='file'
-                    accept='.jpg'
-                    onChange={(event) => {
-                      const file = event.currentTarget.files?.[0];
-                      setFieldValue(EDIT_FIELD_NAMES.IMAGE, file?.name || '');
-                    }}
-                  />
-                </EditLabel>
-              </LoadPhoto>
-            </EditComponentContainer>
-
-            <Button type='submit' disabled={isSubmitting} name='SAVE' />
+            <SaveButtonsWrap>
+              <Button type='submit' disabled={isSubmitting} name='SAVE' />
+            </SaveButtonsWrap>
           </Form>
         )}
       </Formik>
@@ -205,4 +196,4 @@ const EditUser: React.FC = () => {
   );
 };
 
-export default EditUser;
+export default EditProfile;

@@ -123,5 +123,5 @@ export const ContainerArtists = styled.div`
   background-color: #F4F4F4;
   margin-top: 60px;
   margin-bottom: 60px;
-  margin-left: 120px;
+  margin-left: 60px;
 `;

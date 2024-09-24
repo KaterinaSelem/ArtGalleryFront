@@ -10,6 +10,7 @@ import { LoginName, StyledLinkLikeBtn } from '../LoginForm/styles';
 import RadioGroup from '../radioBtns/RadioGroup';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
+import { API_ENDPOINTS } from '../Config/apiConfig';
 
 function UserForm() {
   const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{}|\\:;'<>,.?/]+$/;
@@ -48,17 +49,17 @@ function UserForm() {
     validateOnChange: false,
     onSubmit: async (values: UserFormValues, { resetForm }) => {
       try {
-        const response = await axios.post('/api/register', values);
+        const response = await axios.post(API_ENDPOINTS.REGISTER, values);
         console.log(response.data);
         resetForm();
         if (response.status === 200) {
-          navigate('/login');
+          navigate('/login', { state: { registrationComplete: true } }); // Передаем состояние
         }
       } catch (error) {
         console.error('There was something wrong!', error);
       }
     }
-  });
+ });
 
   return (
     <LoginWrap>

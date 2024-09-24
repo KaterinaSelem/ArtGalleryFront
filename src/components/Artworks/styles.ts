@@ -37,9 +37,11 @@ export const ArtworksContainer = styled.div`
 display: flex;
 flex-wrap: wrap;
 height:fit-content;
-width: 1440px;
+width: 100%;
+max-width: 1440px;
 gap: 30px;
 margin-left: 60px;
+
 `;
 
 export const ArtworkPreveiwcontainer = styled.div`

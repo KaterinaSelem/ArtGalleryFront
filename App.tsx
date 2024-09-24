@@ -9,8 +9,8 @@ import Login from './src/pages/signin/SignIn';
 import Register from './src/pages/signin/Register';
 import Artists from './src/pages/artists/Artists';
 import Artwork from './src/pages/artwork/Artwork';
-import EditUser from './src/components/EditUser/EditUser';
 import UserProfile from './src/components/Profile/UserProfile';
+import Account from './src/pages/account/Account';
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
           <Route path='register' element={<Register />} />
           <Route path='users/profile' element={<UserProfile />} />
           <Route path='users/artists' element={<Artists />} />
-          <Route path='/users/updateUser' element={<EditUser />} />
+          <Route path='users/updateUser' element={<Account />} />
         </Routes>
       </Layout>
     </BrowserRouter>

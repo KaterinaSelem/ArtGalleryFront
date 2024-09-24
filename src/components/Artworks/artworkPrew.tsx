@@ -19,6 +19,7 @@ import {
 import Pagination from '../Pagination/Pagination';
 import { IUser } from '../UserCard/types';
 import { ICategory } from '../../pages/artwork/types';
+import { API_ENDPOINTS } from '../Config/apiConfig';
 
 export const ArtworksContext = createContext<IArtwork[]>([]);
 
@@ -31,7 +32,7 @@ const ArtworkPrew: React.FC<IUser> = () => {
   const [artworksPerPage] = useState<number>(4);
 
   useEffect(() => {
-    fetch('/api/users/artists')
+    fetch('API_ENDPOINTS.GET_ARTISTS')
       .then((response) => response.json())
       .then((user: IUser[]) => {
         setUsers(user);
@@ -61,7 +62,7 @@ const ArtworkPrew: React.FC<IUser> = () => {
       const fetchCategories = async () => {
         try {
           for (const artwork of artworks) {
-            const response = await fetch(`/api/categories/${artwork.categoryId}`);
+            const response = await fetch(API_ENDPOINTS.GET_CATEGORY(artwork.categoryId));
             const category = await response.json();
             // Assuming you're storing multiple categories, you might want to update your state accordingly.
             setCategories((prevCategories) => [...prevCategories, category]);

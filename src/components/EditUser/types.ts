@@ -4,8 +4,6 @@ export interface EditFormValues {
     bornCity: string;
     liveCity: string;
     description: string;
-    image: string;
-
 }
 
 export enum EDIT_FIELD_NAMES {
@@ -14,5 +12,15 @@ export enum EDIT_FIELD_NAMES {
     BORNCITY = 'bornCity',
     LIVECITY = 'liveCity',
     DESCRIPTION = 'description',
-    IMAGE = 'image'
+    IMAGE = 'image',
+  
 }
+
+export interface EditFormImgValues {
+image: File | null;
+}
+
+
+
+
+    

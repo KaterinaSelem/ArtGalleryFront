@@ -19,6 +19,7 @@ import {
 import Pagination from '../Pagination/Pagination';
 import { IUser } from '../UserCard/types';
 import { ICategory } from '../../pages/artwork/types';
+import { API_ENDPOINTS } from '../Config/apiConfig';
 
 const ArtworksGalleryPrew: React.FC<IUser> = () => {
   const [artworks, setArtworks] = useState<IArtwork[]>([]);
@@ -59,7 +60,7 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
       const fetchCategories = async () => {
         try {
           for (const artwork of artworks) {
-            const response = await fetch(`/api/categories/${artwork.categoryId}`);
+            const response = await fetch(API_ENDPOINTS.GET_CATEGORY(artwork.categoryId));
             const category = await response.json();
             // Assuming you're storing multiple categories, you might want to update your state accordingly.
             setCategories((prevCategories) => [...prevCategories, category]);
@@ -118,7 +119,7 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
             style={{ textDecoration: 'none' }}
           >
             <Frame>
-              <StyledArtLinkWorkPreview to={`/works/${artwork.id}`}>
+              <StyledArtLinkWorkPreview to={API_ENDPOINTS.GET_ARTWORKS}>
                 <ArtworkCard
                   style={{ backgroundImage: `url(${artwork.image})` }}
                 />
