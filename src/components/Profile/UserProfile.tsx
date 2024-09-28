@@ -19,6 +19,7 @@ import {
   NavLinkStyled,
 } from  './styles';
 import { ButtonStyled } from '../Button/styles';
+import { API_ENDPOINTS } from '../Config/apiConfig';
 
 interface User {
   id: number;
@@ -44,7 +45,7 @@ const UserProfile: React.FC = () => {
           return;
         }
 
-        const response = await fetch(`/api/users/profile`, {
+        const response = await fetch(API_ENDPOINTS.GET_USERPROFILE, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -65,7 +66,7 @@ const UserProfile: React.FC = () => {
   const handleEditProfileClick = () => {
   
     if (user) {
-      navigate(`/users/updateUser`);
+      navigate(API_ENDPOINTS.UPDATE_USER);
     }
   };
 

@@ -11,6 +11,7 @@ import {
 } from './styles';
 import { LoginName } from '../LoginForm/styles';
 import './styles.css';
+import { API_ENDPOINTS } from '../Config/apiConfig';
 
 interface User extends EditFormValues {
   id: string;
@@ -23,7 +24,7 @@ const EditProfile: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/users/profile`, {
+        const response = await fetch(API_ENDPOINTS.UPDATE_USER, { //подумать как сделать запрос на сервер
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -80,7 +81,7 @@ const EditProfile: React.FC = () => {
     console.log('Submitting form with values:', values);
 
     try {
-      const response = await fetch(`/api/users/updateUser`, {
+      const response = await fetch(API_ENDPOINTS.UPDATE_USER, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

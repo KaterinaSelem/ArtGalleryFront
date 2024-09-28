@@ -9,6 +9,7 @@ import {
 } from './styles';
 import Pagination from '../../components/Pagination/Pagination';
 import { UserCardWrap } from './styles';
+import { API_ENDPOINTS } from '../../components/Config/apiConfig';
 
 export const UsersContext = createContext<IUser[]>([]);
 
@@ -21,7 +22,8 @@ const Artists: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('/api/users/artists');
+        const response = await fetch(API_ENDPOINTS.GET_ARTISTS);
+        console.log('Response:', response);
         const data: IUser[] = await response.json(); 
 
         setUsers(data);

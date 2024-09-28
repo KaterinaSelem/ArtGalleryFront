@@ -37,6 +37,7 @@ import {
 } from '../../components/Artworks/styles';
 import Pagination from '../../components/Pagination/Pagination';
 import { ICategory } from '../artwork/types';
+import { API_ENDPOINTS } from '../../components/Config/apiConfig';
 
 const Artist: React.FC = () => {
   const [user, setUser] = useState<IUser | null>(null);
@@ -50,7 +51,7 @@ const Artist: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/users/artists/${id}`);
+        const response = await fetch(`${API_ENDPOINTS.GET_ARTISTS}/${id}`);
         const user = await response.json();
         setUser(user);
       } catch (error) {
@@ -65,7 +66,7 @@ const Artist: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      fetch('/api/works')
+      fetch(API_ENDPOINTS.GET_ARTWORKS)
         .then((response) => response.json())
         .then((artwork: IArtwork[]) => {
           const filteredArtworks = artwork.filter(
@@ -87,7 +88,7 @@ const Artist: React.FC = () => {
       const fetchCategories = async () => {
         try {
           for (const artwork of artworks) {
-            const response = await fetch(`/api/categories/${artwork.categoryId}`);
+            const response = await fetch(`${API_ENDPOINTS.GET_CATEGORY}/${artwork.categoryId}`);
             const category = await response.json();
             // Assuming you're storing multiple categories, you might want to update your state accordingly.
             setCategories((prevCategories) => [...prevCategories, category]);
@@ -177,7 +178,7 @@ const Artist: React.FC = () => {
               style={{ textDecoration: 'none' }}
             >
               <Frame>
-                <StyledArtLinkWorkPreview to={`/works/${artwork.id}`}>
+                <StyledArtLinkWorkPreview to={`${API_ENDPOINTS.GET_ARTWORKS}/${artwork.id}`}>
                   <ArtworkCard
                     style={{ backgroundImage: `url(${artwork.image})` }}
                   />

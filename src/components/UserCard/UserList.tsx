@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { HomePageComponent, StyledLink, StyledList } from './styles';
 import { IUser } from './types';
+import { API_ENDPOINTS } from '../Config/apiConfig';
 
 const UserList: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -9,7 +10,7 @@ const UserList: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('/api/users/artists');
+        const response = await fetch(API_ENDPOINTS.GET_ARTISTS);
         const data: IUser[] = await response.json(); 
 
         setUsers(data);

@@ -10,6 +10,6 @@ export const API_ENDPOINTS = {
     GET_USERPROFILE: `${API_BASE_URL}/users/profile`,
   GET_ARTISTS: `${API_BASE_URL}/users/artists`,
   GET_ARTWORKS: `${API_BASE_URL}/works`,
-  GET_CATEGORY: (categoryId:number) => `${API_BASE_URL}/categories/${categoryId}`,
+  GET_CATEGORY: `${API_BASE_URL}/categories`,
 
 };

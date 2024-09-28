@@ -30,7 +30,7 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
   const [artworksPerPage] = useState<number>(16);
 
   useEffect(() => {
-    fetch('/api/users/artists')
+    fetch(API_ENDPOINTS.GET_ARTISTS)
       .then((response) => response.json())
       .then((user: IUser[]) => {
         setUsers(user);
@@ -43,7 +43,7 @@ const ArtworksGalleryPrew: React.FC<IUser> = () => {
   }, []);
 
   useEffect(() => {
-    fetch('/api/works')
+    fetch(API_ENDPOINTS.GET_ARTWORKS)
       .then((response) => response.json())
       .then((data: IArtwork[]) => {
         setArtworks(data);

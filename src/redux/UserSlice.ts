@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IUser } from "../components/UserCard/types";
+import { API_ENDPOINTS } from "../components/Config/apiConfig";
 
 interface UserState {
     user: IUser[];
@@ -15,11 +16,17 @@ const initialState: UserState = {
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/users`, {
+      const response = await fetch(API_ENDPOINTS.GET_USER, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       });
+
+      if (!response.ok) {
+        return rejectWithValue(`Error: ${response.status} ${response.statusText}`);
+      }
+
+
       const data = await response.json();
       return data as IUser[];
     } catch (error) {

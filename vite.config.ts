@@ -11,6 +11,7 @@ export default defineConfig({
         target: "https://artgallery-production.up.railway.app",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false, 
       },
     },
   },

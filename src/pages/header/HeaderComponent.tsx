@@ -21,6 +21,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/AuthSlice';
 import { RootState } from '../../redux/Store';
+import { API_ENDPOINTS } from '../../components/Config/apiConfig';
 
 const HeaderComponent: React.FC<IUser> = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -37,7 +38,7 @@ const HeaderComponent: React.FC<IUser> = () => {
     const token = localStorage.getItem('accessToken');
     setIsLoggedIn(!!token); 
 
-    fetch('/api/users/artists')
+    fetch(API_ENDPOINTS.GET_ARTISTS)
       .then((response) => response.json())
       .then((user: IUser[]) => {
         setUsers(user);
@@ -52,7 +53,7 @@ const HeaderComponent: React.FC<IUser> = () => {
   useEffect(() => {
     const fetchRandomArtwork = async () => {
       try {
-        const response = await fetch('/api/works');
+        const response = await fetch(API_ENDPOINTS.GET_ARTWORKS);
         const data = await response.json();
 
         if (Array.isArray(data)) {
